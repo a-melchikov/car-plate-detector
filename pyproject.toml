@@ -12,6 +12,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "mypy>=1.16.1",
     "pytest>=8.4.1",
     "ruff>=0.12.0",
 ]
@@ -41,3 +42,13 @@ ignore = ["E501"]
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.mypy]
+python_version = "3.13"
+strict = true  # Включает строгий режим
+warn_return_any = true  # Предупреждать, если функция возвращает `Any`
+warn_unused_ignores = true  # Предупреждать о неиспользуемых `# type: ignore`
+disallow_untyped_defs = true  # Запрещает функции без аннотаций типов
+disallow_untyped_calls = true  # Запрещает вызовы без аннотаций типов
+check_untyped_defs = true  # Проверять даже функции без аннотаций
+ignore_missing_imports = true  # Игнорировать внешние библиотеки без типизаций
