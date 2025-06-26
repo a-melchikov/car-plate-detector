@@ -1,0 +1,43 @@
+[project]
+name = "car-plate-detector"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "easyocr>=1.7.2",
+    "opencv-python>=4.11.0.86",
+    "pillow>=11.2.1",
+    "ultralytics>=8.3.159",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "ruff>=0.12.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "E", # Ошибки PEP8
+    "W", # Предупреждения PEP8
+    "F", # Ошибки Pyflakes (неиспользуемые импорты, переменные)
+    "I", # Сортировка импортов (isort)
+    "N", # Стиль именования (PEP8)
+    "UP", # Обновление до нового синтаксиса Python
+    "B", # flake8-bugbear (ловит потенциальные баги)
+    "A", # flake8-builtins (избегаем теневых имен)
+    "C4", # flake8-comprehensions (оптимизация list/set comprehensions)
+    "S", # flake8-bandit (проверка безопасности кода)
+    "PERF", # flake8-perf (проверка на медленные конструкции)
+    "PL", # pylint (дополнительные проверки)
+]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
