@@ -1,3 +1,5 @@
+from detector import detect_plates
+
 from app.utils.image_loader import load_images_from_path
 
 
@@ -14,8 +16,23 @@ def main() -> None:
         for filename, _ in images:
             print(f"- {filename}")
 
+        # Обработка каждого изображения
+        for filename, image in images:
+            print(f"\n[Обработка] {filename}")
+            image_path = image.filename  # PIL.Image.Image содержит путь в .filename
+
+            # Выполняем детекцию
+            detection_result = detect_plates(image_path)
+
+            # Выводим результаты
+            for result in detection_result:
+                print(f"Файл: {result['filename']}")
+                for i, plate in enumerate(result["plates"]):
+                    print(f"  Номерной знак {i + 1}: {plate['text']}")
+                    print(f"  Координаты: {plate['box']}")
+
     except Exception as e:
-        print(f"Ошибка загрузки изображений: {e}")
+        print(f"Ошибка загрузки или обработки изображений: {e}")
 
 
 if __name__ == "__main__":
