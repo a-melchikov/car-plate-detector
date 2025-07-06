@@ -1,5 +1,5 @@
 run:
-	uv run python app/main.py
+	uv run python -m app.main
 
 download-model:
 	python download_model.py
