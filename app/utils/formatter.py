@@ -1,8 +1,8 @@
-def format_plate_text(text: str) -> str:
-    valid_letters = set("ABEKMHOPCTYX")
-    valid_digits = set("0123456789")
+class PlateTextFormatter:
+    VALID_LETTERS = set("ABEKMHOPCTYX")
+    VALID_DIGITS = set("0123456789")
 
-    replacements = {
+    REPLACEMENTS = {
         "0": "O",
         "O": "0",
         "1": "Y",
@@ -21,44 +21,58 @@ def format_plate_text(text: str) -> str:
         "P": "9",
     }
 
-    text = text.replace(" ", "")
-    cleaned = [
-        c.upper() for c in text if c.upper() in valid_letters or c in valid_digits
+    EXPECTED_PATTERN = [
+        VALID_LETTERS,
+        VALID_DIGITS,
+        VALID_DIGITS,
+        VALID_DIGITS,
+        VALID_LETTERS,
+        VALID_LETTERS,
     ]
 
-    if len(cleaned) < 6:
-        return "".join(cleaned)
+    def format(self, text: str) -> str:
+        cleaned = self._clean_and_uppercase(text)
+        if len(cleaned) < 6:
+            return "".join(cleaned)
 
-    expected_types = [
-        valid_letters,
-        valid_digits,
-        valid_digits,
-        valid_digits,
-        valid_letters,
-        valid_letters,
-    ]
+        corrected = self._correct_characters(cleaned)
+        formatted_text = self._apply_format(corrected)
+        return formatted_text
 
-    for i in range(6, len(cleaned)):
-        expected_types.append(valid_digits)
+    def _clean_and_uppercase(self, text: str) -> list[str]:
+        text = text.replace(" ", "")
+        return [c.upper() for c in text if self._is_valid_char(c)]
 
-    corrected = []
-    for i, char in enumerate(cleaned):
-        if i >= len(expected_types):
-            break
+    def _is_valid_char(self, char: str) -> bool:
+        upper_char = char.upper()
+        return upper_char in self.VALID_LETTERS or char in self.VALID_DIGITS
 
-        expected = expected_types[i]
-        if char in expected:
-            corrected.append(char)
-        else:
-            corrected_char = replacements.get(char, None)
-            if corrected_char and corrected_char in expected:
-                corrected.append(corrected_char)
+    def _correct_characters(self, chars: list[str]) -> list[str]:
+        corrected_chars = []
+        expected_types = self._build_expected_pattern(len(chars))
+
+        for i, char in enumerate(chars):
+            if i >= len(expected_types):
+                break
+
+            expected = expected_types[i]
+            if char in expected:
+                corrected_chars.append(char)
             else:
-                corrected.append("?")
+                corrected_char = self.REPLACEMENTS.get(char, None)
+                if corrected_char and corrected_char in expected:
+                    corrected_chars.append(corrected_char)
+                else:
+                    corrected_chars.append("?")
+        return corrected_chars
 
-    corrected_text = "".join(corrected)
+    def _build_expected_pattern(self, length: int) -> list[set[str]]:
+        expected = self.EXPECTED_PATTERN[:]
+        while len(expected) < length:
+            expected.append(self.VALID_DIGITS)
+        return expected
 
-    base = corrected_text[:6]
-    region = corrected_text[6:]
-    formatted_text = base + " " + region[:3]
-    return formatted_text
+    def _apply_format(self, corrected: list[str]) -> str:
+        base = "".join(corrected[:6])
+        region = "".join(corrected[6:])[:3]
+        return f"{base} {region}"
