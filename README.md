@@ -57,8 +57,7 @@
 - язык python
 - обнаружение номеров: [YOLOv8](https://github.com/ultralytics/ultralytics) (Haar Cascades - много ложных срабатываний,
   MMDetection - избыточен для этой задачи)
-- распознавание текста: [EasyOCR](https://github.com/JaidedAI/EasyOCR) (Tesseract - для этой задачи придется делать
-  больше настроек, то есть не так хорош "из
+- распознавание текста: [Tesseract](https://github.com/tesseract-ocr/tesseract)
   коробки")
 - работа с изображениями: [OpenCV](https://github.com/opencv/opencv), [Pillow](https://github.com/python-pillow/Pillow)
 
